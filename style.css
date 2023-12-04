@@ -1,0 +1,47 @@
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+	width: 0;
+	height: 0;
+    background-image: url("back8.jpg");
+    background-size: cover;
+}
+
+#kappa {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+}
+
+#level0 {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+#level0 img {
+    width: 400px;
+	height: 400px;
+}
+
+.bullet {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: lightgreen;
+    border-radius: 50%;
+    animation: shootBullet 5s forwards;
+}
+
+@keyframes shootBullet {
+    0% {
+        transform: translate(0, -50%);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(100vw, -50%);
+        opacity: 5;
+    }
+}
