@@ -5,7 +5,7 @@
 
 ### What is❓
 
-Kappa Distroyer is a game 2D, the objective is kills oppenent code (html, css, javascript, python, php, c, Assembleur).
+> Kappa Distroyer is a game 2D, the objective is kills oppenent code (html, css, javascript, python, php, c, Assembleur).
 
 ### Authors 🧠
 
