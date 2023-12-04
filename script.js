@@ -1,4 +1,4 @@
-let kappa = {
+let player = {
     codaPoint: 0,
     level: {curent: 0, damage: {
         1: 250, 2: 400, 3: 500,
@@ -189,7 +189,7 @@ function shootBullet() {
 	document.body.appendChild(bullet);
 	setTimeout(() => {
 		bullet.remove();
-	}, 2500);
+	}, 1500);
 	checkCollision();
 
 
@@ -211,14 +211,13 @@ document.addEventListener('keyup', (event) => {
 });
 
 
-// BOUGE EN RANDOM VITESSE LVL 2
 
-// const kappa = document.getElementById('kappa');
+// kappa = document.getElementById('level1');
 // let directionX = 1.4; 
 // let directionY = 1.2; 
 // let vitesse = 5; 
 
-// function animerKappa() {
+// function Randomspeed2() {
 //   const positionXActuelle = parseInt(kappa.style.right) || 0;
 //   const positionYActuelle = parseInt(kappa.style.top) || 0;
 
@@ -233,19 +232,21 @@ document.addEventListener('keyup', (event) => {
 //   kappa.style.right = positionXActuelle + vitesse * directionX + 'px';
 //   kappa.style.top = positionYActuelle + vitesse * directionY + 'px';
 
-//   requestAnimationFrame(animerKappa);
+//   requestAnimationFrame(Randomspeed2);
 // }
 
-// animerKappa();
+// Randomspeed2();
+
+
 
 // BOUGE EN RANDOM VITESSE LVL 1
 
 const level0 = document.getElementById('level0');
-let directionX = 1; 
-let directionY = 1; 
-let vitesse = 5; 
+ directionX = 1; 
+ directionY = 1; 
+ vitesse = 5; 
 
-function animerlevel0() {
+function Randomspeed1() {
   const positionXActuelle = parseInt(level0.style.right) || 0;
   const positionYActuelle = parseInt(level0.style.top) || 0;
 
@@ -260,10 +261,10 @@ function animerlevel0() {
   level0.style.right = positionXActuelle + vitesse * directionX + 'px';
   level0.style.top = positionYActuelle + vitesse * directionY + 'px';
 
-  requestAnimationFrame(animerlevel0);
+  requestAnimationFrame(Randomspeed1);
 }
 
-animerlevel0();
+Randomspeed1();
 
 // BOUGER DE HAUT EN BAS
 // const kappa = document.getElementById('kappa');
