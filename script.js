@@ -1,6 +1,6 @@
 let player = {
     codaPoint: 0,
-    level: {curent: 0, damage: {
+    level: {current: 0, damage: {
         1: 250, 2: 400, 3: 500,
         4: 500, 5: 500, 6: 500,
         7: null
@@ -9,29 +9,29 @@ let player = {
         damage: 100,
     },
     levelUp: function () {
-        this.level.curent += 1;
-        this.weapon.damage = this.level.damage[this.level.curent];
+        this.level.current += 1;
+        this.weapon.damage = this.level.damage[this.level.current];
     },
     scoreUp: function () {
         this.codaPoint += this.weapon.damage;
     },
     dead: function () {
         this.codaPoint = 0;
-        this.level.curent = 0;
+        this.level.current = 0;
         this.weapon.damage = 100;
         opponent.setOpponent();
     },
     returnCodaPoint: function () {
         return this.codaPoint;
     }
-}
+};
 
 let opponent = {
     isSet: "",
-    image: "",
+    src: "",
     setOpponent: function () {
-        this.image = "./img/kappa_level" + kappa.level.curent + ".png";
-        switch (kappa.level.curent) {
+        this.src = "./img/kappa_level" + kappa.level.current + ".png";
+        switch (kappa.level.current) {
             case 0:
                 this.isSet = "HTML";
                 break;
@@ -59,8 +59,11 @@ let opponent = {
             default:
                 break;
         }
+    },
+    getSrc: function () {
+        return this.src;
     }
-}
+};
 
 const kappa = document.getElementById("kappa");
 const myBg = document.getElementById("myBg");
