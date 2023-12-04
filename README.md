@@ -11,8 +11,8 @@ Kappa Distroyer is a game 2D, the objective is kills oppenent code (html, css, j
 
 Make whith ❤️
 
-✨[Guillaume](https://github.com/GuillaumeSIMONJP)✨
-✨[Matthias](https://github.com/Mattoucoding)✨
-✨[Tania](https://github.com/teenkywinky)✨
-✨[Dylan](https://github.com/DylanS45)✨
+✨[Guillaume](https://github.com/GuillaumeSIMONJP)✨<br>
+✨[Matthias](https://github.com/Mattoucoding)✨<br>
+✨[Tania](https://github.com/teenkywinky)✨<br>
+✨[Dylan](https://github.com/DylanS45)✨<br>
 ✨[Lilyan](https://github.com/DIGYSKY)✨
