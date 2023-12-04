@@ -19,10 +19,13 @@ let kappa = {
     scoreUp: function () {
         this.codaPoint += this.weapon.damage;
     },
-    reset: function () {
+    dead: function () {
         this.codaPoint = 0;
+        this.level.curent = 0;
+        this.weapon.damage = 100;
     },
     returnCodaPoint: function () {
         return this.codaPoint;
     }
 }
+
