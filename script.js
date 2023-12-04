@@ -16,8 +16,8 @@ let kappa = {
         this.level.curent += 1;
         this.weapon.damage = this.level.damage[this.level.curent];
     },
-    scoreUp: function (up) {
-        this.codaPoint += up;
+    scoreUp: function () {
+        this.codaPoint += this.weapon.damage;
     },
     reset: function () {
         this.codaPoint = 0;
