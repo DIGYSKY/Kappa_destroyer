@@ -1,10 +1,6 @@
 let kappa = {
     codaPoint: 0,
-    level: {curent: 0, scoreUpReach: {
-        1: 1000, 2: 5000, 3: 15000,
-        4: 30000, 5: 50000, 6: 75000, 
-        7: 100000
-    }, damage: {
+    level: {curent: 0, damage: {
         1: 250, 2: 400, 3: 500,
         4: 500, 5: 500, 6: 500,
         7: null
@@ -23,9 +19,45 @@ let kappa = {
         this.codaPoint = 0;
         this.level.curent = 0;
         this.weapon.damage = 100;
+        opponent.setOpponent();
     },
     returnCodaPoint: function () {
         return this.codaPoint;
     }
 }
 
+let opponent = {
+    isSet: "",
+    image: "",
+    setOpponent: function () {
+        this.image = "./img/kappa_level" + kappa.level.curent + ".png";
+        switch (kappa.level.curent) {
+            case 0:
+                this.isSet = "HTML";
+                break;
+            case 1:
+                this.isSet = "CSS";
+                break;
+            case 2:
+                this.isSet = "JavaScript";
+                break;
+            case 3:
+                this.isSet = "Python";
+                break;
+            case 4:
+                this.isSet = "PHP";
+                break;
+            case 5:
+                this.isSet = "C";
+                break;
+            case 6:
+                this.isSet = "Assembleur";
+                break;
+            case 7:
+                this.isSet = "Diplôme";
+                break;
+            default:
+                break;
+        }
+    }
+}
