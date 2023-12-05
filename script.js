@@ -20,6 +20,7 @@ let player = {
     levelUp: function () {
         this.level.current += 1;
         this.weapon.damage = this.level.damage[this.level.current];
+		document.getElementById("level").innerHTML = player.getLevel();
     },
     scoreUp: function () {
         this.codaPoint += this.weapon.damage;
@@ -41,6 +42,9 @@ let player = {
 	},
 	setSpeed: function () {
 		this.speed += 1;
+	},
+	getLevel: function () {
+		return this.level.current;
 	}
 };
 
@@ -65,6 +69,7 @@ let opponent = {
 opponent.setOpponent();
 
 document.getElementById("score").innerHTML = player.getCodaPoint();
+document.getElementById("level").innerHTML = player.getLevel();
 
 const kappa = document.getElementById("kappa");
 const myBg = document.getElementById("myBg");
@@ -434,6 +439,13 @@ function Randomspeed1() {
 		level0.style.top = positionYActuelle + vitesse * directionY + 'px';
 	} else if (player.codaPoint == 100000) {
 		window.location.href = "win.html";
+		document.addEventListener("DOMContentLoaded", function() {
+			// Get the audio element
+			var audio = document.getElementById("winAudio");
+	
+			// Play the audio
+			audio.play();
+		});
 	}
 
 	if (player.getCodaPoint() == player.level.heightScore[player.level.current]) {
