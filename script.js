@@ -49,6 +49,8 @@ let opponent = {
     }
 };
 
+opponent.setOpponent();
+
 document.getElementById("score").innerHTML = player.getCodaPoint();
 
 const kappa = document.getElementById("kappa");
@@ -73,7 +75,8 @@ function resetValue() {
 	positionY = 5;
 	kappa.style.left = positionX + "px";
 	kappa.style.top = positionY + "px";
-
+	boss1Img.style.right = "0px";
+    boss1Img.style.top = "0px";
 }
 
 function checkCollision() {
@@ -91,11 +94,18 @@ function checkCollision() {
 		resetValue();
 		
 		direction = 0;
-		alert("You died ! Click OK to restart !");
+		// alert("You died ! Click OK to restart !");
 		window.location.href='index.html'
 	} 
 }
 
+function startCollisionDetection() {
+	checkCollision();
+	requestAnimationFrame(startCollisionDetection);
+}
+
+// Start the collision detection loop
+startCollisionDetection();
 
 function checkHorizontal() {
 	if (positionX +speed> window.innerWidth - kappa.offsetWidth || positionX +speed < 0) {
