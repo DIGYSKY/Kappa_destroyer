@@ -2,6 +2,7 @@ const playerKappa = document.getElementById("kappa");
 const boss1Img = document.getElementById("boss1");
 
 let player = {
+	speed: 7,
     codaPoint: 0,
     level: {current: 0, damage: {
         1: 250, 2: 400, 3: 500,
@@ -12,7 +13,7 @@ let player = {
 		3: 30000, 4: 50000, 5: 75000, 
 		6: 1000000
 	}
-},
+	},
     weapon: {
         damage: 100,
     },
@@ -37,6 +38,9 @@ let player = {
         this.src = `./img/kappa_level${this.level.current}.png`;
 		playerKappa.removeAttribute("src");
 		playerKappa.setAttribute("src", this.src);
+	},
+	setSpeed: function () {
+		this.speed += 1;
 	}
 };
 
@@ -66,7 +70,7 @@ const kappa = document.getElementById("kappa");
 const myBg = document.getElementById("myBg");
 const boss1 = document.getElementById("boss1");
 
-let speed = 7;
+let speed = player.speed;
 let positionX = 5;
 let positionY = 5;
 let direction = 1;
@@ -428,11 +432,16 @@ function Randomspeed1() {
 			directionY /= -1;
 		}
 		level0.style.top = positionYActuelle + vitesse * directionY + 'px';
+	} else if (player.codaPoint == 100000) {
+		window.location.href = "win.html";
 	}
 
 	if (player.getCodaPoint() == player.level.heightScore[player.level.current]) {
 		// Mettez à jour le pattern de mouvement du boss
 		opponent.setVitesse();
+		if (player.level.current > 1) {
+			player.setSpeed();
+		}
 		cancelAnimationFrame(idAnimBoss);
 		player.levelUp();
 
