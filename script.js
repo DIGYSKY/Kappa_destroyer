@@ -21,7 +21,7 @@ let player = {
         this.weapon.damage = 100;
         opponent.setOpponent();
     },
-    returnCodaPoint: function () {
+    getCodaPoint: function () {
         return this.codaPoint;
     }
 };
@@ -64,6 +64,8 @@ let opponent = {
         return this.src;
     }
 };
+
+document.getElementById("score").innerHTML = player.getCodaPoint();
 
 const kappa = document.getElementById("kappa");
 const myBg = document.getElementById("myBg");

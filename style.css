@@ -35,6 +35,15 @@ body {
     animation: shootBullet 5s forwards;
 }
 
+.score-text {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    color: rgb(43, 255, 0);
+    font-size: 25px;
+    font-weight: bold;
+  }
+
 @keyframes shootBullet {
     0% {
         transform: translate(0, -50%);
