@@ -1,3 +1,5 @@
+const playerKappa = document.getElementById("kappa");
+
 let player = {
     codaPoint: 0,
     level: {current: 0, damage: {
@@ -23,42 +25,21 @@ let player = {
     },
     getCodaPoint: function () {
         return this.codaPoint;
-    }
+    },
+	setKappa: function (playerKappa) {
+        this.src = `./img/kappa_level${this.level.current}.png`;
+		playerKappa.removeAttribute("src");
+		playerKappa.setAttribute("src", this.src);
+	}
 };
+
+player.setKappa(playerKappa);
 
 let opponent = {
     isSet: "",
     src: "",
     setOpponent: function () {
         this.src = "./img/kappa_level" + kappa.level.current + ".png";
-        switch (kappa.level.current) {
-            case 0:
-                this.isSet = "HTML";
-                break;
-            case 1:
-                this.isSet = "CSS";
-                break;
-            case 2:
-                this.isSet = "JavaScript";
-                break;
-            case 3:
-                this.isSet = "Python";
-                break;
-            case 4:
-                this.isSet = "PHP";
-                break;
-            case 5:
-                this.isSet = "C";
-                break;
-            case 6:
-                this.isSet = "Assembleur";
-                break;
-            case 7:
-                this.isSet = "Diplôme";
-                break;
-            default:
-                break;
-        }
     },
     getSrc: function () {
         return this.src;
