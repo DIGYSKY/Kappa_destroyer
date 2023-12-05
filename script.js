@@ -1,4 +1,5 @@
 const playerKappa = document.getElementById("kappa");
+const boss1Img = document.getElementById("boss1");
 
 let player = {
     codaPoint: 0,
@@ -39,7 +40,9 @@ let opponent = {
     isSet: "",
     src: "",
     setOpponent: function () {
-        this.src = "./img/kappa_level" + kappa.level.current + ".png";
+        this.src = `./img/kappa_level${player.level.current}.png`;
+		boss1Img.removeAttribute("src");
+		boss1Img.setAttribute("src", this.src);
     },
     getSrc: function () {
         return this.src;
