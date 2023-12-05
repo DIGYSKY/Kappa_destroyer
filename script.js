@@ -7,7 +7,12 @@ let player = {
         1: 250, 2: 400, 3: 500,
         4: 500, 5: 500, 6: 500,
         7: null
-    }},
+    }, heightScore: {
+		0: 1000, 1: 5000, 2: 15000, 
+		3: 30000, 4: 50000, 5: 75000, 
+		6: 1000000
+	}
+},
     weapon: {
         damage: 100,
     },
@@ -17,6 +22,7 @@ let player = {
     },
     scoreUp: function () {
         this.codaPoint += this.weapon.damage;
+		document.getElementById("score").innerHTML = player.getCodaPoint();
     },
     dead: function () {
         this.codaPoint = 0;
@@ -37,7 +43,7 @@ let player = {
 player.setKappa(playerKappa);
 
 let opponent = {
-    isSet: "",
+    vitesse: 5,
     src: "",
     setOpponent: function () {
         this.src = `./img/code_level${player.level.current}.png`;
@@ -46,7 +52,10 @@ let opponent = {
     },
     getSrc: function () {
         return this.src;
-    }
+    },
+	setVitesse: function () {
+		this.vitesse +=1;
+	}
 };
 
 opponent.setOpponent();
@@ -64,6 +73,8 @@ let direction = 1;
 let isMoving = false;
 let animationId;
 let spaceKeyPressed = false;
+let isGameActive = true;
+
 
 function resetValue() {
 	cancelAnimationFrame(animationId);
@@ -79,31 +90,90 @@ function resetValue() {
     boss1Img.style.top = "0px";
 }
 
+let bossHitAnimationId; // Identifiant de l'animation de clignotement
+let bossHitDuration = 500; // Durée du clignotement en millisecondes
+
+function bossHitEffect() {
+    let startTime = null;
+
+    function blinkBoss(timestamp) {
+        if (!startTime) startTime = timestamp;
+
+        const elapsed = timestamp - startTime;
+
+        if (elapsed < bossHitDuration) {
+            boss1Img.style.opacity = (elapsed % 100 < 50) ? 0 : 1; // Change l'opacité pour créer l'effet de clignotement
+            bossHitAnimationId = requestAnimationFrame(blinkBoss);
+        } else {
+            boss1Img.style.opacity = 1; // Rétablit l'opacité à sa valeur normale
+        }
+    }
+
+    cancelAnimationFrame(bossHitAnimationId); // Annule toute animation existante
+    bossHitAnimationId = requestAnimationFrame(blinkBoss); // Démarre l'animation de clignotement
+}
+
+function resetBossHitEffect() {
+    cancelAnimationFrame(bossHitAnimationId); // Annule l'animation de clignotement actuelle
+    boss1Img.style.opacity = 1; // Rétablit l'opacité à sa valeur normale
+}
+
+function resetBullet(bullet) {
+    bullet.remove();
+    cancelAnimationFrame(bullet.animationId);
+}
+
 function checkCollision() {
-	// Calculate the position and size of the kappa and the obstacle
-	const kappaRect = kappa.getBoundingClientRect();
-	const boss1Rect = boss1.getBoundingClientRect();
+	if (isGameActive) {
 
-	if (
-		(kappaRect.left < boss1Rect.right &&
-			kappaRect.right > boss1Rect.left &&
-			kappaRect.top < boss1Rect.bottom &&
-			kappaRect.bottom > boss1Rect.top)
-	) {
-		// Collision detected
-		resetValue();
-		
-		direction = 0;
+    // Calculate the position and size of the kappa and the boss
+    const kappaRect = kappa.getBoundingClientRect();
+    const boss1Rect = boss1.getBoundingClientRect();
 
-		const deathSound = document.getElementById('deathSound');
+    if (
+        (kappaRect.left < boss1Rect.right &&
+            kappaRect.right > boss1Rect.left &&
+            kappaRect.top < boss1Rect.bottom &&
+            kappaRect.bottom > boss1Rect.top)
+    ) {
+        // Collision detected
+		isGameActive = false;
+        resetValue();
+
+        direction = 0;
+
+        const deathSound = document.getElementById('deathSound');
         deathSound.currentTime = 0; // Reset the sound to the beginning in case it's already playing
         deathSound.play();
 
-		// alert("You died ! Click OK to restart !");
-		window.location.href='index.html'
-	} 
+		const deathModal = document.getElementById('deathModal');
+		deathModal.style.display = 'block';
+
+		const restartButton = document.getElementById('restartButton');
+      	restartButton.addEventListener('click', function () {
+    	window.location.reload();
+    });
 }
 
+    // Check for collision with the boss and trigger hit effect
+    const bullets = document.getElementsByClassName('bullet');
+    for (let bullet of bullets) {
+        const bulletRect = bullet.getBoundingClientRect();
+
+        if (
+            	bulletRect.left < boss1Rect.right &&
+                bulletRect.right > boss1Rect.left &&
+                bulletRect.top < boss1Rect.bottom &&
+                bulletRect.bottom > boss1Rect.top
+        ) {
+            // Boss hit by a bullet
+            bossHitEffect();
+            player.scoreUp(); // Increase the player's score
+			resetBullet(bullet);
+        }
+    }
+}
+}
 function startCollisionDetection() {
 	checkCollision();
 	requestAnimationFrame(startCollisionDetection);
@@ -132,32 +202,47 @@ function animateKappa() {
 }
 
 function animateKappaLeft() {
+	if (isGameActive) {
+
 	positionX -= direction * speed;
 	kappa.style.left = positionX + "px";
 	checkCollision(); // Check for collision with the obstacle
 	checkHorizontal();
 	animationId = requestAnimationFrame(animateKappaLeft);
 }
+}
+
 function animateKappaRight() {
+	if (isGameActive) {
+
 	positionX += direction * speed;
 	kappa.style.left = positionX + "px";
 	checkCollision(); // Check for collision with the obstacle
 	checkHorizontal();
 	animationId = requestAnimationFrame(animateKappaRight);
 }
+}
+
 function animateKappaTop() {
+	if (isGameActive) {
+
 	positionY -= direction * speed;
 	kappa.style.top = positionY + "px";
 	checkCollision(); // Check for collision with the obstacle
 	checkVertical();
 	animationId = requestAnimationFrame(animateKappaTop);
 }
+}
+
 function animateKappaBottom() {
+	if (isGameActive) {
+
 	positionY += direction * speed;
 	kappa.style.top = positionY + "px";
 	checkCollision(); // Check for collision with the obstacle
 	checkVertical();
 	animationId = requestAnimationFrame(animateKappaBottom);
+}
 }
 
 
@@ -182,6 +267,8 @@ document.addEventListener("keydown", function (event) {
 });
 
 function shootBullet() {
+	if (isGameActive) {
+
 	const bullet = document.createElement('div');
 	bullet.className = 'bullet';
 	const kappa = document.getElementById('kappa');
@@ -191,18 +278,79 @@ function shootBullet() {
 	bullet.style.top = kappaRect.top + kappaRect.height / 2 + 'px';
 
 	document.body.appendChild(bullet);
+
+	
+
+	function updateScore() {
+		const scoreElement = document.getElementById('score');
+		scoreElement.textContent = player.getCodaPoint();
+	
+		if (player.getCodaPoint() == player.level.heightScore[player.level.current]) {
+
+			player.levelUp();
+
+			// Mettez à jour l'image du boss
+			opponent.setOpponent();
+	
+			// Mettez à jour l'image du kappa
+			player.setKappa();
+	
+			// Mettez à jour le pattern de mouvement du boss
+			directionX = 2;  // Remplacez par le nouveau pattern de mouvement en X
+			directionY = 1.5;  // Remplacez par le nouveau pattern de mouvement en Y
+		}
+	}
+
+	function animateBullet(bullet) {
+		const bulletSpeed = 10;
+		const bulletPositionX = parseInt(bullet.style.left) || 0;
+		const boss1Rect = boss1.getBoundingClientRect();
+		const bulletRect = bullet.getBoundingClientRect();
+	
+		bullet.style.left = bulletPositionX + bulletSpeed + 'px';
+	
+		// Vérifie la collision avec le boss
+		if (
+			(bulletRect.left < boss1Rect.right &&
+				bulletRect.right > boss1Rect.left &&
+				bulletRect.top < boss1Rect.bottom &&
+				bulletRect.bottom > boss1Rect.top)
+		) {
+			// Boss touché par un projectile
+			bossHitEffect();
+	
+			player.scoreUp();
+			console.log(player.codaPoint); // Augmente le score du joueur
+			updateScore();
+		}
+		if (bulletPositionX > window.innerWidth) {
+
+		} else {
+			bullet.animationId = requestAnimationFrame(() => animateBullet(bullet));
+		}	
+	}
+	function updateScore() {
+		const scoreElement = document.getElementById('score');
+		scoreElement.textContent = player.getCodaPoint();
+	}
+
 	setTimeout(() => {
 		bullet.remove();
+		checkCollision(); // Vérifie à nouveau la collision après la suppression du projectile
 	}, 1500);
-	checkCollision();
 
 	const shootSound = document.getElementById('shootSound');
-    if (shootSound.paused) {
-    }
+	if (shootSound.paused) {
+		shootSound.currentTime = 0;
+		shootSound.play();
+	}
 }
+}
+
 
 document.addEventListener('keydown', (event) => {
 	if (event.code === 'Space') {
+		if (isGameActive) {
 		if (!spaceKeyPressed) {
 			spaceKeyPressed = true;
 			shootBullet();
@@ -210,6 +358,7 @@ document.addEventListener('keydown', (event) => {
         shootSound.play();
 		}
 	}
+}
 });
 
 document.addEventListener('keyup', (event) => {
@@ -250,29 +399,54 @@ document.addEventListener('keyup', (event) => {
 // BOUGE EN RANDOM VITESSE LVL 1
 
 const level0 = document.getElementById('level0');
- directionX = 1; 
- directionY = 1; 
- vitesse = 5; 
+ let directionX = 1; 
+ let directionY = 1; 
 
 function Randomspeed1() {
+	vitesse = opponent.vitesse;
   const positionXActuelle = parseInt(level0.style.right) || 0;
   const positionYActuelle = parseInt(level0.style.top) || 0;
 
-  if (positionXActuelle + vitesse > window.innerWidth - level0.offsetWidth || positionXActuelle + vitesse < 0) {
-    directionX /= -1;
-  }
+  if (player.level.current >= 2){
+	if (positionXActuelle + vitesse > window.innerWidth - level0.offsetWidth || positionXActuelle + vitesse < 0) {
+		directionX /= -1;
+	}
 
-  if (positionYActuelle + vitesse > window.innerHeight - level0.offsetHeight || positionYActuelle + vitesse < 0) {
-    directionY /= -1;
-  }
+	if (positionYActuelle + vitesse > window.innerHeight - level0.offsetHeight || positionYActuelle + vitesse < 0) {
+		directionY /= -1;
+	}
 
-  level0.style.right = positionXActuelle + vitesse * directionX + 'px';
-  level0.style.top = positionYActuelle + vitesse * directionY + 'px';
+	level0.style.right = positionXActuelle + vitesse * directionX + 'px';
+	level0.style.top = positionYActuelle + vitesse * directionY + 'px';
+	} else if (player.level.current == 1) {
+		if (positionXActuelle + vitesse > window.innerWidth - level0.offsetWidth || positionXActuelle + vitesse < 0) {
+			directionX /= -1;
+		}
+		level0.style.right = positionXActuelle + vitesse * directionX + 'px';
+	} else if (player.level.current == 0) {
+		if (positionYActuelle + vitesse > window.innerHeight - level0.offsetHeight || positionYActuelle + vitesse < 0) {
+			directionY /= -1;
+		}
+		level0.style.top = positionYActuelle + vitesse * directionY + 'px';
+	}
+
+	if (player.getCodaPoint() == player.level.heightScore[player.level.current]) {
+		// Mettez à jour le pattern de mouvement du boss
+		opponent.setVitesse();
+		cancelAnimationFrame(idAnimBoss);
+		player.levelUp();
+
+		// Mettez à jour l'image du boss
+		opponent.setOpponent();
+
+		// Mettez à jour l'image du kappa
+		player.setKappa(playerKappa);
+	}
 
   requestAnimationFrame(Randomspeed1);
 }
 
-Randomspeed1();
+let idAnimBoss = requestAnimationFrame(Randomspeed1);
 
 // BOUGER DE HAUT EN BAS
 // const kappa = document.getElementById('kappa');
