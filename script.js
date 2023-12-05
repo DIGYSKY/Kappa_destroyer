@@ -94,6 +94,11 @@ function checkCollision() {
 		resetValue();
 		
 		direction = 0;
+
+		const deathSound = document.getElementById('deathSound');
+        deathSound.currentTime = 0; // Reset the sound to the beginning in case it's already playing
+        deathSound.play();
+
 		// alert("You died ! Click OK to restart !");
 		window.location.href='index.html'
 	} 
@@ -191,7 +196,9 @@ function shootBullet() {
 	}, 1500);
 	checkCollision();
 
-
+	const shootSound = document.getElementById('shootSound');
+    if (shootSound.paused) {
+    }
 }
 
 document.addEventListener('keydown', (event) => {
@@ -199,6 +206,8 @@ document.addEventListener('keydown', (event) => {
 		if (!spaceKeyPressed) {
 			spaceKeyPressed = true;
 			shootBullet();
+			shootSound.currentTime = 0;
+        shootSound.play();
 		}
 	}
 });
