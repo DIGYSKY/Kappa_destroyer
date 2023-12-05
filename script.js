@@ -40,7 +40,7 @@ let opponent = {
     isSet: "",
     src: "",
     setOpponent: function () {
-        this.src = `./img/kappa_level${player.level.current}.png`;
+        this.src = `./img/code_level${player.level.current}.png`;
 		boss1Img.removeAttribute("src");
 		boss1Img.setAttribute("src", this.src);
     },
